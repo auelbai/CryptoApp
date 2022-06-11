@@ -8,6 +8,7 @@ import com.example.cryptoapp.data.network.ApiFactory
 import com.example.cryptoapp.domain.CoinInfo
 import com.example.cryptoapp.domain.Repository
 import kotlinx.coroutines.delay
+import java.lang.Exception
 
 class CoinRepositoryImpl(application: Application) : Repository {
 
@@ -31,13 +32,17 @@ class CoinRepositoryImpl(application: Application) : Repository {
 
     override suspend  fun loadData() {
         while (true) {
-            val topCoinsInfo = apiService.getTopCoinsInfo(limit = 50)
-            val fSymbol = mapper.mapNameListToString(topCoinsInfo)
-            val coinsInfoListDto = mapper.mapJsonToDto(apiService.getFullPriceList(fSyms = fSymbol))
-            val dbModelList = coinsInfoListDto.map {
-                mapper.mapDtoToDbModel(it)
+            try {
+                val topCoinsInfo = apiService.getTopCoinsInfo(limit = 50)
+                val fSymbol = mapper.mapNameListToString(topCoinsInfo)
+                val coinsInfoListDto =
+                    mapper.mapJsonToDto(apiService.getFullPriceList(fSyms = fSymbol))
+                val dbModelList = coinsInfoListDto.map {
+                    mapper.mapDtoToDbModel(it)
+                }
+                coinInfoDao.insertPriceList(dbModelList)
+            } catch (e: Exception){
             }
-            coinInfoDao.insertPriceList(dbModelList)
             delay(10000)
         }
     }
