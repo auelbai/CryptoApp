@@ -6,7 +6,7 @@ data class CoinInfo(
     val toSymbol: String?,
     val price: String?,
     val lastUpdate: Long?,
-    val openDay: String?,
+    val lowDay: String?,
     val highDay: String?,
     val lastMarket: String?,
     val imageUrl: String?
