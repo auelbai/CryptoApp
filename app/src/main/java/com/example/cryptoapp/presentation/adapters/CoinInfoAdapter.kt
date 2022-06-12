@@ -3,6 +3,7 @@ package com.example.cryptoapp.presentation.adapters
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cryptoapp.R
 import com.example.cryptoapp.databinding.ItemCoinInfoBinding
@@ -11,13 +12,8 @@ import com.squareup.picasso.Picasso
 
 class CoinInfoAdapter(
     private val context: Context
-) : RecyclerView.Adapter<CoinInfoAdapter.CoinInfoViewHolder>() {
+) : ListAdapter<CoinInfo, CoinInfoAdapter.CoinInfoViewHolder>(DiffUtils()) {
 
-    var coinInfoList: List<CoinInfo> = listOf()
-        set(value) {
-            field = value
-            notifyDataSetChanged()
-        }
 
     var onCoinClickListener: OnCoinClickListener? = null
 
@@ -30,10 +26,8 @@ class CoinInfoAdapter(
         return CoinInfoViewHolder(binding)
     }
 
-    override fun getItemCount() = coinInfoList.size
-
     override fun onBindViewHolder(holder: CoinInfoViewHolder, position: Int) {
-        val coin = coinInfoList[position]
+        val coin = getItem(position)
         val binding = holder.binding
         with(binding) {
             with(coin) {
