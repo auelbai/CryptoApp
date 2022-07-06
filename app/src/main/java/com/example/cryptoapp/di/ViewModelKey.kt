@@ -1,4 +1,4 @@
-package com.example.cryptoapp.presentation
+package com.example.cryptoapp.di
 
 import androidx.lifecycle.ViewModel
 import dagger.MapKey
